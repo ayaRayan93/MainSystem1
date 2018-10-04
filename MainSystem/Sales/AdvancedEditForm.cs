@@ -213,29 +213,30 @@ namespace MainSystem
         //when select customer(مهندس,مقاول,تاجر)display in comCustomer the all clients of th customer 
         private void comEngCon_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (loaded)
+            try
             {
-                label9.Visible = true;
-                comCustomer.Visible = true;
-
-                try
+                if (loaded)
                 {
-                    string query = "select * from customer where Customer_ID in(select Client_ID from custmer_client where Customer_ID=" + comEngCon.SelectedValue + ")";
-                    MySqlDataAdapter da = new MySqlDataAdapter(query, dbconnection);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    comCustomer.DataSource = dt;
-                    comCustomer.DisplayMember = dt.Columns["Customer_Name"].ToString();
-                    comCustomer.ValueMember = dt.Columns["Customer_ID"].ToString();
-                    comCustomer.Text = "";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                    if (comEngCon.Text != "")
+                    {
+                        label9.Visible = true;
+                        comCustomer.Visible = true;
 
+                        string query = "select * from customer where Customer_ID in(select Client_ID from custmer_client where Customer_ID=" + comEngCon.SelectedValue + ")";
+                        MySqlDataAdapter da = new MySqlDataAdapter(query, dbconnection);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        comCustomer.DataSource = dt;
+                        comCustomer.DisplayMember = dt.Columns["Customer_Name"].ToString();
+                        comCustomer.ValueMember = dt.Columns["Customer_ID"].ToString();
+                        comCustomer.Text = "";
+                    }
+                }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void comBox_SelectedValueChanged(object sender, EventArgs e)
